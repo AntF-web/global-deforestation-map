@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Global Deforestation Interactive Map</title>
+  <meta name="description" content="An interactive historical world map of deforestation since the beginning of the 20th century." />
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <div class="eyebrow"><span class="dot"></span> Interactive historical map</div>
+
+      <h1>Global Deforestation Map</h1>
+
+      <p class="subtitle">
+        Explore the historical geography of deforestation from the early 20th century to today.
+        Use the era buttons to move through time and click a hotspot to see what changed, where, and why.
+      </p>
+
+      <section class="panel">
+        <h2>Timeline eras</h2>
+        <div class="timeline-buttons" id="timelineButtons"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Driver filter</h2>
+        <div class="filters" id="driverFilters"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Current era</h2>
+        <div class="era-title" id="eraTitle"></div>
+        <div class="era-summary" id="eraSummary"></div>
+        <div class="meta" id="eraMeta"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Hotspots in this era</h2>
+        <div class="hotspot-list" id="hotspotList"></div>
+      </section>
+
+      <section class="panel" id="selectedHotspotPanel">
+        <h2>Selected hotspot</h2>
+
+        <div class="era-title" id="selectedTitle">Click a hotspot</div>
+
+        <div class="era-summary" id="selectedSummary">
+          Select a marker on the map or a hotspot card to view its details.
+        </div>
+
+        <div class="detail-block">
+          <strong>Main drivers</strong>
+          <p id="selectedDrivers">—</p>
+        </div>
+
+        <div class="detail-block">
+          <strong>Historical context</strong>
+          <p id="selectedContext">—</p>
+        </div>
+
+        <div class="detail-block">
+          <strong>Critical note</strong>
+          <p id="selectedCritical">—</p>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Legend</h2>
+
+        <div class="legend">
+          <div class="legend-row"><span class="legend-dot low"></span> Lower / emerging pressure</div>
+          <div class="legend-row"><span class="legend-dot medium"></span> Significant pressure</div>
+          <div class="legend-row"><span class="legend-dot severe"></span> Severe pressure</div>
+          <div class="legend-row"><span class="legend-dot extreme"></span> Extreme pressure / crisis</div>
+        </div>
+      </section>
+    </div>
+  </aside>
+
+  <main class="map-wrap">
+    <div id="map"></div>
+
+    <div class="map-overlay">
+      <h3>How to use</h3>
+      <p>
+        Change the historical era, filter by driver, and click markers to compare regions like the
+        Amazon, Congo Basin, Southeast Asia, and boreal forests. Marker size and color represent
+        the intensity of pressure in that era.
+      </p>
+    </div>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="./script.js"></script>
+</body>
+</html>
