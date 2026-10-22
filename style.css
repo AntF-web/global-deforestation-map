@@ -6,6 +6,7 @@
   --muted: #99b1a4;
   --line: rgba(255, 255, 255, 0.08);
   --green: #39d98a;
+  --dark-green: #0d6b3e;
   --yellow: #ffd166;
   --orange: #ff9f43;
   --red: #ff5d5d;
@@ -13,9 +14,7 @@
   --radius: 18px;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 html,
 body {
@@ -79,12 +78,15 @@ h1 {
   letter-spacing: -0.05em;
 }
 
-.subtitle {
+.subtitle,
+.small-note {
   color: var(--muted);
   line-height: 1.6;
-  margin: 0 0 18px;
-  font-size: 0.98rem;
+  font-size: 0.95rem;
 }
+
+.subtitle { margin: 0 0 18px; }
+.small-note { margin: 10px 0 0; }
 
 .panel {
   background: var(--panel-soft);
@@ -95,8 +97,7 @@ h1 {
   margin-bottom: 16px;
 }
 
-.panel h2,
-.panel h3 {
+.panel h2 {
   margin: 0 0 12px;
   font-size: 1rem;
   letter-spacing: -0.02em;
@@ -109,8 +110,18 @@ h1 {
   gap: 8px;
 }
 
+.timeline-controls,
+.toggle-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
 .timeline-btn,
-.filter-btn {
+.filter-btn,
+.control-btn,
+.toggle-btn {
   border: 1px solid rgba(255,255,255,0.12);
   background: rgba(255,255,255,0.06);
   color: var(--text);
@@ -123,13 +134,17 @@ h1 {
 }
 
 .timeline-btn:hover,
-.filter-btn:hover {
+.filter-btn:hover,
+.control-btn:hover,
+.toggle-btn:hover {
   background: rgba(57, 217, 138, 0.14);
   border-color: rgba(57, 217, 138, 0.35);
 }
 
 .timeline-btn.active,
-.filter-btn.active {
+.filter-btn.active,
+.control-btn.active,
+.toggle-btn.active {
   background: rgba(57, 217, 138, 0.18);
   border-color: rgba(57, 217, 138, 0.45);
   color: #dffff0;
@@ -173,7 +188,7 @@ h1 {
   gap: 10px;
 }
 
-.hotspot-card {
+.region-card {
   border: 1px solid var(--line);
   background: rgba(255,255,255,0.04);
   border-radius: 14px;
@@ -182,21 +197,37 @@ h1 {
   transition: 0.2s ease;
 }
 
-.hotspot-card:hover,
-.hotspot-card.active {
+.region-card:hover,
+.region-card.active {
   background: rgba(57, 217, 138, 0.08);
   border-color: rgba(57, 217, 138, 0.35);
 }
 
-.hotspot-card-title {
+.region-card-title {
   font-weight: 800;
   margin-bottom: 6px;
 }
 
-.hotspot-card-text {
+.region-card-text {
   color: var(--muted);
   font-size: 0.9rem;
   line-height: 1.5;
+}
+
+.region-card-meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.mini-chip {
+  font-size: 0.68rem;
+  padding: 4px 7px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.09);
+  color: #dbe9e0;
 }
 
 .detail-block {
@@ -219,9 +250,16 @@ h1 {
   font-size: 0.92rem;
 }
 
-.legend {
+.legend,
+.forest-legend {
   display: grid;
   gap: 8px;
+}
+
+.forest-legend {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
 }
 
 .legend-row {
@@ -239,20 +277,28 @@ h1 {
   flex: 0 0 14px;
 }
 
-.legend-dot.low {
-  background: #39d98a;
+.legend-dot.low { background: #39d98a; }
+.legend-dot.medium { background: #ffd166; }
+.legend-dot.severe { background: #ff9f43; }
+.legend-dot.extreme { background: #ff5d5d; }
+
+.forest-chip {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid rgba(57, 217, 138, 0.85);
+  background: rgba(57, 217, 138, 0.2);
+  display: inline-block;
 }
 
-.legend-dot.medium {
-  background: #ffd166;
+.forest-chip.shrink {
+  animation: shrinkPreview 1.8s ease-in-out infinite;
+  transform-origin: center;
 }
 
-.legend-dot.severe {
-  background: #ff9f43;
-}
-
-.legend-dot.extreme {
-  background: #ff5d5d;
+@keyframes shrinkPreview {
+  0%, 100% { transform: scale(1); opacity: 0.95; }
+  50% { transform: scale(0.62); opacity: 0.78; }
 }
 
 .map-wrap {
@@ -343,24 +389,59 @@ h1 {
 
   .sidebar-inner {
     height: auto;
-    max-height: 48vh;
+    max-height: 50vh;
   }
 
   .map-wrap {
-    height: 52vh;
+    height: 50vh;
   }
 }
 
 @media (max-width: 640px) {
-  h1 {
-    font-size: 2rem;
-  }
-
-  .sidebar-inner {
-    padding: 14px;
-  }
-
-  .map-overlay {
-    display: none;
-  }
+  h1 { font-size: 2rem; }
+  .sidebar-inner { padding: 14px; }
+  .map-overlay { display: none; }
 }
+
+/* Local vector world map */
+#map{position:relative;background:#0a1521;overflow:hidden;}
+.offline-svg{width:100%;height:100%;display:block;touch-action:none;cursor:grab;}
+.world-country{fill:#233742;stroke:#65818b;stroke-width:.48;vector-effect:non-scaling-stroke;}
+.forest-halo{transition:fill-opacity .25s;cursor:pointer;stroke-width:2px;}
+.forest-marker{cursor:pointer;vector-effect:non-scaling-stroke;}
+.vector-zoom-controls{position:absolute;z-index:600;top:18px;left:18px;display:flex;flex-direction:column;gap:4px;}
+.vector-zoom-controls button{border:1px solid #536572;border-radius:7px;background:#142431;color:#fff;font-size:23px;width:36px;height:35px;cursor:pointer;}
+.vector-popup{position:absolute;z-index:700;top:20px;right:18px;max-width:300px;max-height:200px;overflow:auto;background:#102330;color:#e6f3f3;border:1px solid #799ca5;border-radius:12px;padding:12px;font-size:12px;box-shadow:0 10px 35px #0009;}
+.vector-popup[hidden]{display:none;}
+
+
+/* More impactful deforestation graphics */
+#map {
+  background:
+    radial-gradient(circle at 35% 22%, rgba(57,217,138,0.09), transparent 22%),
+    radial-gradient(circle at 74% 66%, rgba(255,95,95,0.06), transparent 18%),
+    linear-gradient(180deg, #07121c, #0a1715 56%, #07110e);
+}
+.world-country{fill:#263b3f;stroke:#6f8a8f;stroke-width:.52;vector-effect:non-scaling-stroke;}
+.forest-zone-base{cursor:pointer;vector-effect:non-scaling-stroke;filter:drop-shadow(0 0 9px rgba(57,217,138,.18));}
+.forest-zone-accent{cursor:pointer;vector-effect:non-scaling-stroke;animation: forestPulse 2.3s ease-in-out infinite;filter:drop-shadow(0 0 8px rgba(255,120,107,.28));}
+.forest-hotspot{cursor:pointer;}
+.forest-hotspot-pulse{animation: hotspotPulse 1.9s ease-out infinite;transform-box: fill-box;transform-origin:center;}
+.forest-hotspot-shape{vector-effect:non-scaling-stroke;filter:drop-shadow(0 0 10px rgba(255,110,70,.25));}
+.forest-hotspot-core{filter:drop-shadow(0 0 4px rgba(255,255,220,.35));}
+@keyframes forestPulse {
+  0%,100% { opacity:.58; stroke-dashoffset:0; }
+  50% { opacity:.96; stroke-dashoffset:16; }
+}
+@keyframes hotspotPulse {
+  0% { opacity:.16; transform:scale(.7); }
+  55% { opacity:.32; transform:scale(1.1); }
+  100% { opacity:0; transform:scale(1.65); }
+}
+
+/* Forest comparison: red/orange reference footprint, shrinking green remaining forest. */
+.forest-before { filter: drop-shadow(0 0 4px rgba(244,110,77,.28)); }
+.forest-after { filter: drop-shadow(0 0 6px rgba(57,217,138,.35)); }
+.forest-location-dot {cursor:pointer;}
+.forest-comparison {cursor:pointer;}
+.forest-hotspot-pulse,.forest-hotspot-shape,.forest-hotspot-core,.forest-zone-accent {animation:none!important;}

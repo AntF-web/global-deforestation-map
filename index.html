@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>Global Deforestation Interactive Map</title>
-  <meta name="description" content="An interactive historical world map of deforestation since the beginning of the 20th century." />
-
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <title>Global Deforestation Map — Shrinking Forest Areas</title>
+  <meta
+    name="description"
+    content="A GitHub Pages-ready interactive historical world map of deforestation with animated shrinking forest areas."
+  />
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
@@ -19,17 +19,34 @@
 
       <p class="subtitle">
         Explore the historical geography of deforestation from the early 20th century to today.
-        Use the era buttons to move through time and click a hotspot to see what changed, where, and why.
+        Compare the original forest circle (orange) with the shrinking remaining forest circle (green).
+        Move through eras to see the visualized contraction.
       </p>
 
       <section class="panel">
         <h2>Timeline eras</h2>
         <div class="timeline-buttons" id="timelineButtons"></div>
+        <div class="timeline-controls">
+          <button class="control-btn" id="playPauseBtn">Play timeline</button>
+          <button class="control-btn" id="replayBtn">Replay shrink</button>
+        </div>
       </section>
 
       <section class="panel">
-        <h2>Driver filter</h2>
+        <h2>Filter by driver</h2>
         <div class="filters" id="driverFilters"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Forest area animation</h2>
+        <div class="toggle-row">
+          <button class="toggle-btn active" id="toggleAreasBtn">Forest areas on</button>
+          <button class="toggle-btn active" id="toggleAnimationBtn">Animation on</button>
+        </div>
+        <p class="small-note">
+          The circles are symbolic comparisons based on illustrative radii, not measured forest cover.
+          They are designed to communicate broad historical shrinkage visually.
+        </p>
       </section>
 
       <section class="panel">
@@ -40,22 +57,25 @@
       </section>
 
       <section class="panel">
-        <h2>Hotspots in this era</h2>
-        <div class="hotspot-list" id="hotspotList"></div>
+        <h2>Regions in this era</h2>
+        <div class="hotspot-list" id="regionList"></div>
       </section>
 
-      <section class="panel" id="selectedHotspotPanel">
-        <h2>Selected hotspot</h2>
-
-        <div class="era-title" id="selectedTitle">Click a hotspot</div>
-
+      <section class="panel">
+        <h2>Selected region</h2>
+        <div class="era-title" id="selectedTitle">Click a region</div>
         <div class="era-summary" id="selectedSummary">
-          Select a marker on the map or a hotspot card to view its details.
+          Select a forest comparison circle or region card to inspect it.
         </div>
 
         <div class="detail-block">
           <strong>Main drivers</strong>
           <p id="selectedDrivers">—</p>
+        </div>
+
+        <div class="detail-block">
+          <strong>Remaining forest circle</strong>
+          <p id="selectedForestArea">—</p>
         </div>
 
         <div class="detail-block">
@@ -78,24 +98,29 @@
           <div class="legend-row"><span class="legend-dot severe"></span> Severe pressure</div>
           <div class="legend-row"><span class="legend-dot extreme"></span> Extreme pressure / crisis</div>
         </div>
+
+        <div class="forest-legend">
+          <div class="legend-row"><span class="forest-chip"></span> Green inner circle = remaining forest (illustrative)</div>
+          <div class="legend-row"><span class="forest-chip shrink"></span> Orange outer circle = original forest extent (illustrative)</div>
+        </div>
       </section>
     </div>
   </aside>
 
   <main class="map-wrap">
     <div id="map"></div>
+    <div class="vector-zoom-controls"><button id="mapZoomIn" title="Zoom in">+</button><button id="mapZoomOut" title="Zoom out">−</button><button id="mapReset" title="Reset view">⌖</button></div>
 
     <div class="map-overlay">
       <h3>How to use</h3>
       <p>
-        Change the historical era, filter by driver, and click markers to compare regions like the
-        Amazon, Congo Basin, Southeast Asia, and boreal forests. Marker size and color represent
-        the intensity of pressure in that era.
+        Change the era to watch the green circles shrink inside the orange reference circles. Use
+        <strong>Play timeline</strong> to watch forest areas shrink through time.
       </p>
     </div>
   </main>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="./world-data.js"></script>
   <script src="./script.js"></script>
 </body>
 </html>

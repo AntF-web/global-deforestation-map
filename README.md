@@ -1,81 +1,22 @@
-# Global Deforestation Interactive Map
+# Global Deforestation — Offline Vector Map
 
-A GitHub Pages-ready interactive map about the history of global deforestation from 1900 to today.
+A no-API, no-tile-server edition of the animated shrinking-forest-area map. Preserves the original eras, hotspot records, forest halo animation, regional information, filters, playback and zoom controls.
 
-## Files
+The basemap comes from bundled Natural Earth country geometry (`world-data.js`). No account or map key required.
 
-```text
-deforestation-map-github-pages/
-├── index.html
-├── style.css
-├── script.js
-└── README.md
-```
+### Usage
+Open `index.html` in a browser, or upload the five files together to the root of a GitHub Pages repository.
 
-## How to run locally
+### Important
+Green areas are **symbolic circles representing regional change**, not measured forest boundaries. Historical radius estimates are illustrative, not verified deforestation statistics. Use research-backed spatial forest-loss datasets for quantitative claims.
 
-Open `index.html` directly in your browser.
 
-Because the map uses Leaflet and online map tiles, you need an internet connection.
+## Visual impact update
+This version replaces small dot-style hotspots with animated hotspot symbols and more visible canopy-zone overlays. Forest areas now combine a filled canopy zone with a pulsing loss ring, making shrinkage and pressure easier to read on the map.
 
-## How to publish on GitHub Pages
 
-1. Create a new GitHub repository.
-2. Upload these files to the repository root:
-   - `index.html`
-   - `style.css`
-   - `script.js`
-   - `README.md`
-3. Go to **Settings**.
-4. Go to **Pages**.
-5. Under **Build and deployment**, choose:
-   - Source: **Deploy from a branch**
-   - Branch: **main**
-   - Folder: **/root**
-6. Click **Save**.
-7. Your site will appear at:
+## Before / after circle visualization
+Orange outer circle = the largest symbolic forest radius in that region's series. Green inner circle = the symbolic radius for the selected timeline era. When eras change, the green circle animates to its new size while the reference circle stays fixed. **Not proportional to measured forest cover**: the source series uses illustrative radii, not satellite-derived measured forest areas.
 
-```text
-https://YOUR-USERNAME.github.io/YOUR-REPOSITORY-NAME/
-```
-
-## Customize the map
-
-Edit `script.js`.
-
-To add a new historical era, add an object to the `eras` array:
-
-```js
-{
-  id: "new-era",
-  label: "2030s",
-  title: "Future forest politics",
-  summary: "Your description here.",
-  tags: ["climate", "policy"]
-}
-```
-
-Then add matching hotspots in `hotspotsByEra`:
-
-```js
-"new-era": [
-  createHotspot(
-    "Amazon Basin",
-    -6,
-    -60,
-    4,
-    ["fire", "climate"],
-    "Short description.",
-    "Historical context.",
-    "Critical note."
-  )
-]
-```
-
-## Credits
-
-Built with:
-
-- Leaflet
-- OpenStreetMap
-- CARTO basemap tiles
+## Slower playback
+The automatic timeline now advances every 4.2 seconds (previously 1.8 seconds), and forest shrink animations last 2.4 seconds.
